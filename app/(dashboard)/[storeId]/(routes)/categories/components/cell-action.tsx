@@ -15,11 +15,11 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { BillboardColumn } from './columns';
+import { CategoryColumn } from './columns';
 import AlertModal from '@/components/alert-modal';
 
 interface CellActionProps {
-	data: BillboardColumn;
+	data: CategoryColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -31,11 +31,11 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 	const onConfirm = async () => {
 		try {
 			setLoading(true);
-			await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
-			toast.success('Billboard deleted.');
+			await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
+			toast.success('Category deleted.');
 			router.refresh();
 		} catch (error) {
-			toast.error('Make sure you removed all categories using this billboard first.');
+			toast.error('Make sure you removed all products using this category first.');
 		} finally {
 			setOpen(false);
 			setLoading(false);
@@ -44,7 +44,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
 	const onCopy = (id: string) => {
 		navigator.clipboard.writeText(id);
-		toast.success('Billboard ID copied to clipboard.');
+		toast.success('Category ID copied to clipboard.');
 	};
 
 	return (
@@ -67,7 +67,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 					<DropdownMenuItem onClick={() => onCopy(data.id)}>
 						<Copy className="mr-2 h-4 w-4" /> Copy Id
 					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}>
+					<DropdownMenuItem onClick={() => router.push(`/${params.storeId}/categories/${data.id}`)}>
 						<Edit className="mr-2 h-4 w-4" /> Update
 					</DropdownMenuItem>
 					<DropdownMenuItem onClick={() => setOpen(true)}>
