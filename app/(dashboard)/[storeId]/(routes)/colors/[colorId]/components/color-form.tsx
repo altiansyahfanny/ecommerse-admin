@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Size } from '@prisma/client';
+import { Color } from '@prisma/client';
 import axios from 'axios';
 import { Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
@@ -29,25 +29,25 @@ const formSchema = z.object({
 	value: z.string().min(1),
 });
 
-type SizeFormValues = z.infer<typeof formSchema>;
+type ColorFormValues = z.infer<typeof formSchema>;
 
-interface SizeFormProps {
-	initialData: Size | null;
+interface ColorFormProps {
+	initialData: Color | null;
 }
 
-export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
+export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
 	const params = useParams();
 	const router = useRouter();
 
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const title = initialData ? 'Edit size' : 'Create size';
-	const description = initialData ? 'Edit a size.' : 'Add a new size';
-	const toastMessage = initialData ? 'Size updated.' : 'Size created.';
+	const title = initialData ? 'Edit color' : 'Create color';
+	const description = initialData ? 'Edit a color.' : 'Add a new color';
+	const toastMessage = initialData ? 'Color updated.' : 'Color created.';
 	const action = initialData ? 'Save changes' : 'Create';
 
-	const form = useForm<SizeFormValues>({
+	const form = useForm<ColorFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {
 			name: '',
@@ -55,16 +55,16 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
 		},
 	});
 
-	const onSubmit = async (data: SizeFormValues) => {
+	const onSubmit = async (data: ColorFormValues) => {
 		try {
 			setLoading(true);
 			if (initialData) {
-				await axios.patch(`/api/${params.storeId}/sizes/${params.sizeId}`, data);
+				await axios.patch(`/api/${params.storeId}/colors/${params.colorId}`, data);
 			} else {
-				await axios.post(`/api/${params.storeId}/sizes`, data);
+				await axios.post(`/api/${params.storeId}/colors`, data);
 			}
 			router.refresh();
-			router.push(`/${params.storeId}/sizes`);
+			router.push(`/${params.storeId}/colors`);
 			toast.success(toastMessage);
 		} catch (error: any) {
 			toast.error('Something went wrong.');
@@ -76,12 +76,12 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
 	const onDelete = async () => {
 		try {
 			setLoading(true);
-			await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
+			await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
 			router.refresh();
-			router.push(`/${params.storeId}/sizes`);
-			toast.success('Size deleted.');
+			router.push(`/${params.storeId}/colors`);
+			toast.success('Color deleted.');
 		} catch (error: any) {
-			toast.error('Make sure you removed all products using this size first.');
+			toast.error('Make sure you removed all products using this color first.');
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -99,7 +99,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
 			<div className="flex items-center justify-between">
 				<Heading title={title} description={description} />
 				{initialData && (
-					<Button disabled={loading} variant="destructive" size="sm" onClick={() => setOpen(true)}>
+					<Button disabled={loading} variant="destructive" color="sm" onClick={() => setOpen(true)}>
 						<Trash className="h-4 w-4" />
 					</Button>
 				)}
@@ -115,7 +115,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
 								<FormItem>
 									<FormLabel>Name</FormLabel>
 									<FormControl>
-										<Input disabled={loading} placeholder="Size name" {...field} />
+										<Input disabled={loading} placeholder="Color name" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -128,7 +128,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
 								<FormItem>
 									<FormLabel>Value</FormLabel>
 									<FormControl>
-										<Input disabled={loading} placeholder="Size value" {...field} />
+										<Input disabled={loading} placeholder="Color value" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
