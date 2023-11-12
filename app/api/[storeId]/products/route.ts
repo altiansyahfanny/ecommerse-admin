@@ -102,7 +102,7 @@ export async function GET(req: Request, { params }: { params: { storeId: string 
 			},
 			include: {
 				images: true,
-				category: false,
+				category: true,
 				color: true,
 				size: true,
 			},

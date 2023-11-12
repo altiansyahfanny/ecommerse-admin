@@ -30,8 +30,9 @@ export const columns: ColumnDef<OrderColumn>[] = [
 		header: 'Total Price',
 	},
 	{
-		accessorKey: 'Paid',
-		header: 'isPaid',
+		accessorKey: 'isPaid',
+		header: 'Paid',
+		// cell: ({ row }) => <span>{row.original.isPaid ? 'Ya' : 'No'}</span>,
 	},
 	{
 		accessorKey: 'createdAt',
